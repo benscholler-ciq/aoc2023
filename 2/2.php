@@ -1,7 +1,6 @@
 <?php
 
 $file = fopen('input.txt', 'r');
-$max = ["red" => 12, "green" => 13, "blue" => 14];
 $sum = 0;
 
 while (!feof($file)) {
@@ -17,12 +16,8 @@ while (!feof($file)) {
     $maxBlueCount = max(array_map('intval', $blueMatches[1]));
     $maxGreenCount = max(array_map('intval', $greenMatches[1]));
 
-    if ($maxRedCount > $max["red"] || $maxBlueCount > $max["blue"] || $maxGreenCount > $max["green"]) {
-        echo 'Skipping game ' . $gameMatch[1] . "\n";
-        continue;
-    }
-
-    $sum += intval($gameMatch[1]);
+    $power = $maxRedCount * $maxBlueCount * $maxGreenCount;
+    $sum += $power;
 }
 
 echo $sum;
