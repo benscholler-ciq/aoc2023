@@ -8,8 +8,8 @@ $allMatches = $register = [];
 while (!feof($file)) {
     $lineNum++;
     $line = fgets($file, 4096);
-    preg_match_all('/\*/', $line, $specials, PREG_OFFSET_CAPTURE);
-    preg_match_all('/(\d+)/', $line, $nums, PREG_OFFSET_CAPTURE);
+    preg_match_all('/\*/', $line, $specials, PREG_OFFSET_CAPTURE); # Grab * characters
+    preg_match_all('/(\d+)/', $line, $nums, PREG_OFFSET_CAPTURE); # Grab numbers
     $allMatches[$lineNum] = [
         'specials' => $specials[0],
         'nums' => $nums[0]
@@ -28,9 +28,9 @@ foreach ($allMatches as $lineNum => $matches) {
         $nextNums = $allMatches[$lineNum + 1]['nums'];
 
         ## Determine neighbors
-        determineNeighbors($lineNum - 1, $previousNums, $specialPosition, $register);
-        determineNeighbors($lineNum + 1, $nextNums, $specialPosition, $register);
-        determineNeighbors($lineNum, $matches['nums'], $specialPosition, $register);
+        determineNeighbors($previousNums, $specialPosition, $register);
+        determineNeighbors($nextNums, $specialPosition, $register);
+        determineNeighbors($matches['nums'], $specialPosition, $register);
     }
 
     # Find products together
@@ -40,10 +40,11 @@ foreach ($allMatches as $lineNum => $matches) {
         }
     }
 
+    # Reset register
     $register = [];
 }
 
-function determineNeighbors($lineNum, $numbers, $specialPosition, &$register) {
+function determineNeighbors($numbers, $specialPosition, &$register) {
     foreach ($numbers as $num) {
         $start = $num[1]; # Box of number
         $end = $start + strlen((string) $num[0]);

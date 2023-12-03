@@ -8,8 +8,8 @@ $allMatches = $register = [];
 while (!feof($file)) {
     $lineNum++;
     $line = fgets($file, 4096);
-    preg_match_all('/([^a-zA-Z0-9.\n])/', $line, $specials, PREG_OFFSET_CAPTURE);
-    preg_match_all('/(\d+)/', $line, $nums, PREG_OFFSET_CAPTURE);
+    preg_match_all('/([^a-zA-Z0-9.\n])/', $line, $specials, PREG_OFFSET_CAPTURE); # Grab anything not periods or alphanum
+    preg_match_all('/(\d+)/', $line, $nums, PREG_OFFSET_CAPTURE); # Grab nums
     $allMatches[$lineNum] = [
         'specials' => $specials[0],
         'nums' => $nums[0]
@@ -46,7 +46,7 @@ function determineNeighbors($lineNum, $numbers, $specialPosition, &$register) {
 }
 
 # Sum register values
-$sum = $otherSum = 0;
+$sum = 0;
 foreach ($register as $lineNum => $line) {
     $sum +=  array_sum(array_values($line));
 }
